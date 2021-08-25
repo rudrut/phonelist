@@ -1,7 +1,6 @@
 <?php
 
-$pdo = new PDO('mysql:host=localhost;port=3306;dbname=products_crud', 'root', '');
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+require_once '../../database.php';
 
 $search = $_GET['search'] ?? '';
 if ($search) {
@@ -14,24 +13,8 @@ if ($search) {
 $statement->execute();
 $products = $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
-
-<!doctype html>
-<html lang="en">
-
-<head>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
-  <link rel="stylesheet" href="app.css">
-  <title>Products CRUD</title>
-</head>
-
-<body>
+  <?php require_once '../../views/partials/header.php'; ?>
   <h1>Products CRUD</h1>
-
   <p>
     <a href="create.php" class="btn btn-success">Create product</a>
   </p>
@@ -59,7 +42,7 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC);
         <tr>
           <th scope="row"><?php echo $i + 1 ?></th>
           <td>
-            <img src="<?php echo $product['image'] ?>" class="thumb-image">
+            <img src="/<?php echo $product['image'] ?>" class="thumb-image">
           </td>
           <td><?php echo $product['title'] ?></td>
           <td><?php echo $product['price'] ?></td>
@@ -75,6 +58,4 @@ $products = $statement->fetchAll(PDO::FETCH_ASSOC);
       <?php } ?>
     </tbody>
   </table>
-</body>
-
-</html>
+<?php require_once '../../views/partials/footer.php'; ?>
