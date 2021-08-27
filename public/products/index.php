@@ -1,7 +1,22 @@
-<h1>Product list</h1>
+<?php
 
+require_once '../../database.php';
+
+$search = $_GET['search'] ?? '';
+if ($search) {
+  $statement = $pdo->prepare('SELECT * FROM products WHERE title LIKE :title ORDER BY create_date DESC');
+  $statement->bindValue(':title', "%$search%");
+} else {
+  $statement = $pdo->prepare('SELECT * FROM products ORDER BY create_date DESC');
+}
+
+$statement->execute();
+$products = $statement->fetchAll(PDO::FETCH_ASSOC);
+?>
+  <?php require_once '../../views/partials/header.php'; ?>
+  <h1>Products CRUD</h1>
   <p>
-    <a href="/products/create" class="btn btn-success">Create product</a>
+    <a href="create.php" class="btn btn-success">Create product</a>
   </p>
 
   <form>
@@ -27,16 +42,14 @@
         <tr>
           <th scope="row"><?php echo $i + 1 ?></th>
           <td>
-            <?php if ($product['image']): ?>
-              <img src="/<?php echo $product['image'] ?>" class="thumb-image">
-            <?php endif; ?>
+            <img src="/<?php echo $product['image'] ?>" class="thumb-image">
           </td>
           <td><?php echo $product['title'] ?></td>
           <td><?php echo $product['price'] ?></td>
           <td><?php echo $product['create_date'] ?></td>
           <td>
-            <a href="/products/update?id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
-            <form style="display: inline-block" method="post" action="/products/delete">
+            <a href="update.php?id=<?php echo $product['id'] ?>" class="btn btn-sm btn-outline-primary">Edit</a>
+            <form style="display: inline-block" method="post" action="delete.php">
               <input type="hidden" name="id" value="<?php echo $product['id'] ?>">
               <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
             </form>
@@ -45,3 +58,4 @@
       <?php } ?>
     </tbody>
   </table>
+<?php require_once '../../views/partials/footer.php'; ?>
