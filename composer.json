@@ -1,0 +1,15 @@
+{
+    "name": "rudiculous/03_good",
+    "autoload": {
+        "psr-4": {
+            "app\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rudi Rutanen",
+            "email": "rudi.rutanen@hotmail.com"
+        }
+    ],
+    "require": {}
+}
